@@ -38,7 +38,7 @@ function consultarCantidad(arrayProductos){
             total+=calcularSubtotal(arrayProductos[i],cantidad);
         }
     }
-
+    alert("Su total es $"+total);
 }
 
 function elegirProductos() {
