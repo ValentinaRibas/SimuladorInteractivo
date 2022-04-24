@@ -52,7 +52,7 @@ function elegirProductos() {
 
     let mensajeFinal = "Su compra es:\n";
     for (prod of productosCliente){
-        mensajeFinal = mensajeFinal+prod.cantidad+" "+productosTienda[parseInt(prod.nombre)+1]+"\n";
+        mensajeFinal = mensajeFinal+prod.cantidad+" "+productosTienda[parseInt(prod.nombre)-1]+"\n";
     }
     mensajeFinal = mensajeFinal+"Si desea finalizar ingrese 1, si desea volver a realizar el pedido ingrese 0";
     let finalizar = prompt(mensajeFinal);
