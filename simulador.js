@@ -8,31 +8,30 @@ const productosTienda = ["Chocolate blanco Arcor,140","Chocolate negro Arcor,150
 //Objeto Producto
 //Tiene nombre y cantidad
 class Producto {
-    constructor (nombre, cantidad){
+    constructor (nombre, cantidad, precio){
         this.nombre = nombre;
         this.cantidad = cantidad;
+        this.precio = this.precio;
     }
 }
 
-//Funcion calcularTotal
+//Funcion calcularSubtotal
 //Parametros: arrayProductos
-//Suma todos los subtotales
-function calcularTotal(arrayProductos){
-    let total=0;
+//Calcula los subtotales
+function calcularSubtotal(arrayProductos){
     for (prod of arrayProductos){
         if(prod.nombre == 1){
-            total+=(140*prod.cantidad);
+            prod.precio = (140*prod.cantidad);
         } else if(prod.nombre == 2){
-            total+=(150*prod.cantidad);
+            prod.precio = (150*prod.cantidad);
         } else if(prod.nombre == 3){
-            total+=(120*prod.cantidad);
+            prod.precio = (120*prod.cantidad);
         } else if(prod.nombre == 4){
-            total+=(100*prod.cantidad);
+            prod.precio = (100*prod.cantidad);
         } else if(prod.nombre == 5){
-            total+=(150*prod.cantidad);
+            prod.precio = (150*prod.cantidad);
         }
     }
-    alert("Su total es $"+total);
 }
 
 //Funcion elegirCantidad
@@ -48,18 +47,34 @@ function elegirCantidad(numeroProducto){
     return -1;
 }
 
+//Funcion CalcularTotal
+//Calcula el precio total
+function calcularTotal(){
+    let total = 0;
+    for (prod of productosCliente){
+        total += prod.precio;
+    }
+    return total;
+}
+
 //Funcion completarCompra
+//Llama a calcularSubtotal, toma el dato que ingresa el cliente y finaliza la compra
 function completarCompra () {
+
+    calcularSubtotal(productosCliente);
+
     let mensajeFinal = "Su compra es:\n";
     for (prod of productosCliente){
         let datosProducto = productosTienda[(parseInt(prod.nombre)-1)].split(",");
         let nombreProducto = datosProducto[0];
-        mensajeFinal = mensajeFinal+prod.cantidad+" "+nombreProducto+"\n";
+        mensajeFinal = mensajeFinal + prod.cantidad+" "+nombreProducto+" $" + prod.precio +"\n";
     }
     mensajeFinal = mensajeFinal+"Si desea finalizar ingrese 1, si desea volver a realizar el pedido ingrese 0";
     let finalizar = prompt(mensajeFinal);
+
     if(finalizar==1){
-        calcularTotal(productosCliente);
+        let total = calcularTotal();
+        alert("Su total es: $" + total +"\nGracias por su compra!");
     }
     else if(finalizar==0){
         nombreProducto=1;
