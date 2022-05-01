@@ -1,10 +1,18 @@
 alert("Tienda online de chocolates");
 
 //Declaro las variables y constantes que voy a usar
-let producto = 1;
+let nombreProducto = 1;
 const productosCliente = [];
-const productosTienda = ["Chocolate blanco Arcor","Chocolate negro Arcor","Bombones Bonobon blanco","Bombones Bonobon negro","Bombones Bonobon dulce de leche"];
+const productosTienda = ["Chocolate blanco Arcor,140","Chocolate negro Arcor,150","Bombones Bonobon blanco,120","Bombones Bonobon negro,100","Bombones Bonobon dulce de leche,150"];
 
+//Objeto Producto
+//Tiene nombre y cantidad
+class Producto {
+    constructor (nombre, cantidad){
+        this.nombre = nombre;
+        this.cantidad = cantidad;
+    }
+}
 
 //Funcion calcularTotal
 //Parametros: arrayProductos
@@ -32,27 +40,21 @@ function calcularTotal(arrayProductos){
 //Controla que el producto sea valido y toma el dato que ingresa el usuario
 function elegirCantidad(numeroProducto){
     if (numeroProducto > 0){
-        let nombreProducto = productosTienda[numeroProducto-1];
+        let datosProducto = productosTienda[(numeroProducto-1)].split(",");
+        let nombreProducto = datosProducto[0];
         let cantidad = prompt("Ingrese la cantidad que desea del producto: "+nombreProducto);
         return cantidad;
     }
     return -1;
 }
 
-//Funcion elegirProductos
-//Toma los datos que ingresa el cliente y llama a calcular total
-function elegirProductos() {
-    while (producto > 0 && producto < 6) {
-        producto = prompt("Los chocolates en stock son:\n1)Chocolate blanco Arcor\n2)Chocolate negro Arcor\n3)Bombones Bonobon blanco\n4)Bombones Bonobon negro\n5)Bombones Bonobon dulce de leche\nIngrese el numero de producto que desea, 0 si desea finalizar el pedido");
-        let cantidadProducto = elegirCantidad(producto);
-        if (cantidadProducto > 0){
-            productosCliente.push({nombre: producto, cantidad: cantidadProducto});
-        }
-    }
-
+//Funcion completarCompra
+function completarCompra () {
     let mensajeFinal = "Su compra es:\n";
     for (prod of productosCliente){
-        mensajeFinal = mensajeFinal+prod.cantidad+" "+productosTienda[parseInt(prod.nombre)-1]+"\n";
+        let datosProducto = productosTienda[(parseInt(prod.nombre)-1)].split(",");
+        let nombreProducto = datosProducto[0];
+        mensajeFinal = mensajeFinal+prod.cantidad+" "+nombreProducto+"\n";
     }
     mensajeFinal = mensajeFinal+"Si desea finalizar ingrese 1, si desea volver a realizar el pedido ingrese 0";
     let finalizar = prompt(mensajeFinal);
@@ -60,10 +62,31 @@ function elegirProductos() {
         calcularTotal(productosCliente);
     }
     else if(finalizar==0){
-        producto=1;
+        nombreProducto=1;
         productosCliente.splice(0,(productosCliente.length));
         elegirProductos();
     }
+}
+
+//Funcion elegirProductos
+//Toma los datos que ingresa el cliente y llama a calcular total
+function elegirProductos() {
+    while (nombreProducto > 0 && nombreProducto < 6) {
+        let pedirProducto = "Los chocolates en stock son:\n";
+        for (let p=0; p<(productosTienda.length); p++){
+            let datosProducto =  productosTienda[p].split(",");
+            pedirProducto = pedirProducto + (p+1) + ")" + datosProducto[0] + " $"+ datosProducto[1]+"\n";
+        }
+
+        pedirProducto = pedirProducto + "Ingrese el numero de producto que desea, 0 si desea finalizar el pedido";
+        nombreProducto = prompt(pedirProducto);
+        let cantidadProducto = elegirCantidad(nombreProducto);
+        if (cantidadProducto > 0){
+            let productoActual = new Producto(nombreProducto, cantidadProducto);
+            productosCliente.push(productoActual);
+        }
+    }
+    completarCompra();    
 }
 
 elegirProductos();
