@@ -1,9 +1,13 @@
-alert("Tienda online de chocolates");
-
 //Declaro las variables y constantes que voy a usar
 let nombreProducto = 1;
 const productosCliente = [];
 const productosTienda = ["Chocolate blanco Arcor,140","Chocolate negro Arcor,150","Bombones Bonobon blanco,120","Bombones Bonobon negro,100","Bombones Bonobon dulce de leche,150"];
+let buttonComplete = document.getElementById("btn_complete");
+let cantidad1 = document.getElementById("cant_1");
+let cantidad2 = document.getElementById("cant_2");
+let cantidad3 = document.getElementById("cant_3");
+let cantidad4 = document.getElementById("cant_4");
+let cantidad5 = document.getElementById("cant_5");
 
 //Objeto Producto
 //Tiene nombre y cantidad
@@ -78,30 +82,38 @@ function completarCompra () {
     }
     else if(finalizar==0){
         nombreProducto=1;
+        cantidad1.value="";
+        cantidad2.value="";
+        cantidad3.value="";
+        cantidad4.value="";
+        cantidad5.value="";
         productosCliente.splice(0,(productosCliente.length));
-        elegirProductos();
     }
 }
 
-//Funcion elegirProductos
-//Toma los datos que ingresa el cliente y llama a calcular total
-function elegirProductos() {
-    while (nombreProducto > 0 && nombreProducto < 6) {
-        let pedirProducto = "Los chocolates en stock son:\n";
-        for (let p=0; p<(productosTienda.length); p++){
-            let datosProducto =  productosTienda[p].split(",");
-            pedirProducto = pedirProducto + (p+1) + ")" + datosProducto[0] + " $"+ datosProducto[1]+"\n";
-        }
-
-        pedirProducto = pedirProducto + "Ingrese el numero de producto que desea, 0 si desea finalizar el pedido";
-        nombreProducto = prompt(pedirProducto);
-        let cantidadProducto = elegirCantidad(nombreProducto);
-        if (cantidadProducto > 0){
-            let productoActual = new Producto(nombreProducto, cantidadProducto);
-            productosCliente.push(productoActual);
-        }
+//Funcion tomarProductos
+//Al clickear Completar compra se toman las cantidades ingresadas para cada producto
+//y se llama a la funcion completarCompra
+buttonComplete.addEventListener('click', function tomarProductos(){
+    if (cantidad1.value != ""){
+        let productoActual = new Producto(1, cantidad1.value);
+        productosCliente.push(productoActual);
     }
-    completarCompra();    
-}
-
-elegirProductos();
+    if (cantidad2.value != ""){
+        let productoActual = new Producto(2, cantidad2.value);
+        productosCliente.push(productoActual);
+    }
+    if (cantidad3.value != ""){
+        let productoActual = new Producto(3, cantidad3.value);
+        productosCliente.push(productoActual);
+    }
+    if (cantidad4.value != ""){
+        let productoActual = new Producto(4, cantidad4.value);
+        productosCliente.push(productoActual);
+    }
+    if (cantidad5.value != ""){
+        let productoActual = new Producto(5, cantidad5.value);
+        productosCliente.push(productoActual);
+    }
+    completarCompra();
+})
