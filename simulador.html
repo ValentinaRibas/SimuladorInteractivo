@@ -7,9 +7,12 @@
     <title>Simulador interactivo</title>
 </head>
 <body>
-    <div class="tienda">
+    <div id="tienda">
         <title>Bienvenido a la tienda de chocolates</title>
-        
+        <button id="btn_mostrarListado">Haga click aqui para ver el listado de productos</button>
+    </div>
+
+    <div id="listado">
         <h1>Listado de Productos:</h1>
 
         <h2 id="choco_bl_ar">Chocolate blanco Arcor $140</h2> <input type="text" id="cant_1" placeholder="Ingrese cantidad"/>
@@ -23,6 +26,17 @@
         <h2 id="bomb_ddl">Bombones Bonobon dulce de leche $150</h2><input type="text" id="cant_5" placeholder="Ingrese cantidad"/>
 
         <button id="btn_complete" style="display: flex; margin-top: 1cm;">Completar compra</button>
+    </div>
+
+    <div id="total">
+        <title>Detalle de compra: </title>
+        <h3 id="detalle"></h3>
+        <button id="btn_fin">Finalizar</button>
+        <button id="btn_volver">Volver a realizar el pedido</button>
+    </div>
+
+    <div id="final">
+        <h1 id="final_msg"></h1>
     </div>
 
     <script src="./simulador.js"></script>

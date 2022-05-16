@@ -3,11 +3,25 @@ let nombreProducto = 1;
 const productosCliente = [];
 const productosTienda = ["Chocolate blanco Arcor,140","Chocolate negro Arcor,150","Bombones Bonobon blanco,120","Bombones Bonobon negro,100","Bombones Bonobon dulce de leche,150"];
 let buttonComplete = document.getElementById("btn_complete");
+let buttonListado = document.getElementById("btn_mostrarListado");
+let buttonFin = document.getElementById("btn_fin");
+let buttonVolver = document.getElementById("btn_volver");
 let cantidad1 = document.getElementById("cant_1");
 let cantidad2 = document.getElementById("cant_2");
 let cantidad3 = document.getElementById("cant_3");
 let cantidad4 = document.getElementById("cant_4");
 let cantidad5 = document.getElementById("cant_5");
+let detalle = document.getElementById("detalle");
+let fin = document.getElementById("final_msg");
+let tienda = document.getElementById("tienda");
+let listado = document.getElementById("listado");
+let total = document.getElementById("total");
+let final = document.getElementById("final");
+
+tienda.style.display = "block";
+listado.style.display = "none";
+total.style.display = "none";
+final.style.display = "none";
 
 //Objeto Producto
 //Tiene nombre y cantidad
@@ -38,19 +52,6 @@ function calcularSubtotal(arrayProductos){
     }
 }
 
-//Funcion elegirCantidad
-//Parametros: numeroProducto
-//Controla que el producto sea valido y toma el dato que ingresa el usuario
-function elegirCantidad(numeroProducto){
-    if (numeroProducto > 0){
-        let datosProducto = productosTienda[(numeroProducto-1)].split(",");
-        let nombreProducto = datosProducto[0];
-        let cantidad = prompt("Ingrese la cantidad que desea del producto: "+nombreProducto);
-        return cantidad;
-    }
-    return -1;
-}
-
 //Funcion CalcularTotal
 //Calcula el precio total
 function calcularTotal(){
@@ -58,7 +59,7 @@ function calcularTotal(){
     for (prod of productosCliente){
         total += prod.precio;
     }
-    return total;
+    sessionStorage.setItem("total", total);
 }
 
 //Funcion completarCompra
@@ -73,14 +74,19 @@ function completarCompra () {
         let nombreProducto = datosProducto[0];
         mensajeFinal = mensajeFinal + prod.cantidad+" "+nombreProducto+" $" + prod.precio +"\n";
     }
-    mensajeFinal = mensajeFinal+"Si desea finalizar ingrese 1, si desea volver a realizar el pedido ingrese 0";
-    let finalizar = prompt(mensajeFinal);
+    listado.style.display = "none";
+    total.style.display = "block";
+    detalle.innerHTML=mensajeFinal;
 
-    if(finalizar==1){
-        let total = calcularTotal();
-        alert("Su total es: $" + total +"\nGracias por su compra!");
-    }
-    else if(finalizar==0){
+    buttonFin.addEventListener('click', function mostrarListado(){
+        total.style.display = "none";
+        final.style.display = "block";
+        calcularTotal();
+        let totalPrecio = sessionStorage.getItem("total");
+        fin.innerHTML="Su total es: $" + totalPrecio +"\nGracias por su compra!";
+        sessionStorage.removeItem("total");
+    })
+    buttonVolver.addEventListener('click', function mostrarListado(){
         nombreProducto=1;
         cantidad1.value="";
         cantidad2.value="";
@@ -88,7 +94,10 @@ function completarCompra () {
         cantidad4.value="";
         cantidad5.value="";
         productosCliente.splice(0,(productosCliente.length));
-    }
+        total.style.display = "none";
+        final.style.display = "none";
+        listado.style.display = "block";
+    })
 }
 
 //Funcion tomarProductos
@@ -116,4 +125,9 @@ buttonComplete.addEventListener('click', function tomarProductos(){
         productosCliente.push(productoActual);
     }
     completarCompra();
+})
+
+buttonListado.addEventListener('click', function mostrarListado(){
+    tienda.style.display = "none";
+    listado.style.display = "block";
 })
