@@ -83,7 +83,8 @@ function completarCompra () {
         final.style.display = "block";
         calcularTotal();
         let totalPrecio = sessionStorage.getItem("total");
-        fin.innerHTML="Su total es: $" + totalPrecio +"\nGracias por su compra!";
+        let msjFinal ="Su total es: $" + totalPrecio +"\nGracias por su compra!";
+        swal.fire(msjFinal);
         sessionStorage.removeItem("total");
     })
     buttonVolver.addEventListener('click', function mostrarListado(){
