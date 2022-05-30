@@ -6,22 +6,32 @@ let buttonComplete = document.getElementById("btn_complete");
 let buttonListado = document.getElementById("btn_mostrarListado");
 let buttonFin = document.getElementById("btn_fin");
 let buttonVolver = document.getElementById("btn_volver");
-let cantidad1 = document.getElementById("cant_1");
-let cantidad2 = document.getElementById("cant_2");
-let cantidad3 = document.getElementById("cant_3");
-let cantidad4 = document.getElementById("cant_4");
-let cantidad5 = document.getElementById("cant_5");
 let detalle = document.getElementById("detalle");
 let fin = document.getElementById("final_msg");
 let tienda = document.getElementById("tienda");
 let listado = document.getElementById("listado");
 let total = document.getElementById("total");
 let final = document.getElementById("final");
+let productosBody = document.getElementById("productosDetalle");
+
 
 tienda.style.display = "block";
 listado.style.display = "none";
 total.style.display = "none";
 final.style.display = "none";
+
+fetch("./productos.json")
+.then(response=> response.json())
+.then(productosDetalle=> {
+    productosDetalle.forEach(prod => {
+        let {id, nombre, marca, precio} = prod;
+        productosBody.innerHTML += `<div>
+        <h2>${nombre}</h2>
+        <h2>${marca}</h2>
+        <h2>${precio}</h2><input type="text" id="cant_${id}" placeholder="Ingrese cantidad"/>
+        </div>`
+    });
+})
 
 //Objeto Producto
 //Tiene nombre y cantidad
@@ -29,7 +39,7 @@ class Producto {
     constructor (nombre, cantidad, precio){
         this.nombre = nombre;
         this.cantidad = cantidad;
-        this.precio = this.precio;
+        this.precio = precio;
     }
 }
 
@@ -88,6 +98,11 @@ function completarCompra () {
         sessionStorage.removeItem("total");
     })
     buttonVolver.addEventListener('click', function mostrarListado(){
+        let cantidad1 = document.getElementById("cant_1");
+        let cantidad2 = document.getElementById("cant_2");
+        let cantidad3 = document.getElementById("cant_3");
+        let cantidad4 = document.getElementById("cant_4");
+        let cantidad5 = document.getElementById("cant_5");
         nombreProducto=1;
         cantidad1.value="";
         cantidad2.value="";
@@ -105,6 +120,11 @@ function completarCompra () {
 //Al clickear Completar compra se toman las cantidades ingresadas para cada producto
 //y se llama a la funcion completarCompra
 buttonComplete.addEventListener('click', function tomarProductos(){
+    let cantidad1 = document.getElementById("cant_1");
+    let cantidad2 = document.getElementById("cant_2");
+    let cantidad3 = document.getElementById("cant_3");
+    let cantidad4 = document.getElementById("cant_4");
+    let cantidad5 = document.getElementById("cant_5");
     if (cantidad1.value != ""){
         let productoActual = new Producto(1, cantidad1.value);
         productosCliente.push(productoActual);

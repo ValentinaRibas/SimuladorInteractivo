@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "nombre": "Chocolate blanco",
+        "marca": "Arcor",
+        "precio": 140
+    },
+    {
+        "id": 2,
+        "nombre": "Chocolate negro",
+        "marca": "Arcor",
+        "precio": 150
+    },
+    {
+        "id": 3,
+        "nombre": "Bombon Bonobon blanco",
+        "marca": "Arcor",
+        "precio": 120
+    },
+    {
+        "id": 4,
+        "nombre": "Bombon Bonobon negro",
+        "marca": "Arcor",
+        "precio": 100
+    },
+    {
+        "id": 5,
+        "nombre": "Bombon Bonobon dulce de leche",
+        "marca": "Arcor",
+        "precio": 150
+    }
+]
