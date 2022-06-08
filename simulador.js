@@ -1,6 +1,6 @@
 //Declaro las variables y constantes que voy a usar
-let nombreProducto = 1;
 const productosCliente = [];
+const productosLista = [];
 const productosTienda = ["Chocolate blanco Arcor,140","Chocolate negro Arcor,150","Bombones Bonobon blanco,120","Bombones Bonobon negro,100","Bombones Bonobon dulce de leche,150"];
 let buttonComplete = document.getElementById("btn_complete");
 let buttonListado = document.getElementById("btn_mostrarListado");
@@ -24,13 +24,30 @@ fetch("./productos.json")
 .then(response=> response.json())
 .then(productosDetalle=> {
     productosDetalle.forEach(prod => {
-        let {id, nombre, marca, precio} = prod;
-        productosBody.innerHTML += `<div>
-        <h2>${nombre}</h2>
-        <h2>${marca}</h2>
-        <h2>${precio}</h2><input type="text" id="cant_${id}" placeholder="Ingrese cantidad"/>
-        </div>`
+        let {id, nombre, marca, precio, img} = prod;
+        productosLista.push(prod);
+        productosBody.innerHTML += `<tr>
+        <td><img src="${img}" style="max-width: 225px; max-height: 225px;"></td>
+        <td>${nombre}  ${marca}</td>
+        <td style='margin-left: 5rem;'>$${precio}</td><td style='margin-left: 5rem; align-items: center; display: flex;'><button id="btn1${id}">-</button><h6 id="txt${id}"></h6><button id="btn2${id}">+</button></td>
+        </tr>`
     });
+    productosLista.forEach(prod => {
+        let button2 = document.getElementById("btn2"+prod.id);
+        button2.addEventListener('click', function sumarCantidad(){
+            prod.cantidad+=1;
+            let txtCantidad = document.getElementById("txt"+prod.id);
+            txtCantidad.innerHTML = prod.cantidad;
+        });
+        let button1 = document.getElementById("btn1"+prod.id);
+        button1.addEventListener('click', function sumarCantidad(){
+            if(prod.cantidad >=1){
+                prod.cantidad-=1;
+                let txtCantidad = document.getElementById("txt"+prod.id);
+                txtCantidad.innerHTML = prod.cantidad;
+            }
+        })
+    })
 })
 
 //Objeto Producto
@@ -65,11 +82,11 @@ function calcularSubtotal(arrayProductos){
 //Funcion CalcularTotal
 //Calcula el precio total
 function calcularTotal(){
-    let total = 0;
+    let totalAct = 0;
     for (prod of productosCliente){
-        total += prod.precio;
+        totalAct += prod.precio;
     }
-    sessionStorage.setItem("total", total);
+    sessionStorage.setItem("total", totalAct);
 }
 
 //Funcion completarCompra
@@ -78,11 +95,11 @@ function completarCompra () {
 
     calcularSubtotal(productosCliente);
 
-    let mensajeFinal = "Su compra es:\n";
+    let mensajeFinal = "";
     for (prod of productosCliente){
         let datosProducto = productosTienda[(parseInt(prod.nombre)-1)].split(",");
         let nombreProducto = datosProducto[0];
-        mensajeFinal = mensajeFinal + prod.cantidad+" "+nombreProducto+" $" + prod.precio +"\n";
+        mensajeFinal = mensajeFinal + prod.cantidad+" "+nombreProducto+" $" + prod.precio +"<br>";
     }
     listado.style.display = "none";
     total.style.display = "block";
@@ -94,21 +111,26 @@ function completarCompra () {
         calcularTotal();
         let totalPrecio = sessionStorage.getItem("total");
         let msjFinal ="Su total es: $" + totalPrecio +"\nGracias por su compra!";
-        swal.fire(msjFinal);
+        Swal.fire(msjFinal);
         sessionStorage.removeItem("total");
+        setTimeout(function(){
+            window.location.reload();
+        }, 2500);
     })
     buttonVolver.addEventListener('click', function mostrarListado(){
-        let cantidad1 = document.getElementById("cant_1");
-        let cantidad2 = document.getElementById("cant_2");
-        let cantidad3 = document.getElementById("cant_3");
-        let cantidad4 = document.getElementById("cant_4");
-        let cantidad5 = document.getElementById("cant_5");
-        nombreProducto=1;
-        cantidad1.value="";
-        cantidad2.value="";
-        cantidad3.value="";
-        cantidad4.value="";
-        cantidad5.value="";
+        let txt1 = document.getElementById("txt1");
+        let txt2 = document.getElementById("txt2");
+        let txt3 = document.getElementById("txt3");
+        let txt4 = document.getElementById("txt4");
+        let txt5 = document.getElementById("txt5");
+        txt1.innerHTML="";
+        txt2.innerHTML="";
+        txt3.innerHTML="";
+        txt4.innerHTML="";
+        txt5.innerHTML="";
+        productosLista.forEach(prod => {
+            prod.cantidad = 0;
+        })
         productosCliente.splice(0,(productosCliente.length));
         total.style.display = "none";
         final.style.display = "none";
@@ -120,31 +142,12 @@ function completarCompra () {
 //Al clickear Completar compra se toman las cantidades ingresadas para cada producto
 //y se llama a la funcion completarCompra
 buttonComplete.addEventListener('click', function tomarProductos(){
-    let cantidad1 = document.getElementById("cant_1");
-    let cantidad2 = document.getElementById("cant_2");
-    let cantidad3 = document.getElementById("cant_3");
-    let cantidad4 = document.getElementById("cant_4");
-    let cantidad5 = document.getElementById("cant_5");
-    if (cantidad1.value != ""){
-        let productoActual = new Producto(1, cantidad1.value);
-        productosCliente.push(productoActual);
-    }
-    if (cantidad2.value != ""){
-        let productoActual = new Producto(2, cantidad2.value);
-        productosCliente.push(productoActual);
-    }
-    if (cantidad3.value != ""){
-        let productoActual = new Producto(3, cantidad3.value);
-        productosCliente.push(productoActual);
-    }
-    if (cantidad4.value != ""){
-        let productoActual = new Producto(4, cantidad4.value);
-        productosCliente.push(productoActual);
-    }
-    if (cantidad5.value != ""){
-        let productoActual = new Producto(5, cantidad5.value);
-        productosCliente.push(productoActual);
-    }
+    productosLista.forEach(prod => {
+        if (prod.cantidad > 0){
+            let productoActual = new Producto(prod.id, prod.cantidad);
+            productosCliente.push(productoActual);
+        }
+    });
     completarCompra();
 })
 

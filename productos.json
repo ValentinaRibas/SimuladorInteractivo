@@ -3,30 +3,40 @@
         "id": 1,
         "nombre": "Chocolate blanco",
         "marca": "Arcor",
-        "precio": 140
+        "precio": 140,
+        "cantidad": 0,
+        "img": "images/ch_bl.jpg"
     },
     {
         "id": 2,
         "nombre": "Chocolate negro",
         "marca": "Arcor",
-        "precio": 150
+        "precio": 150,
+        "cantidad": 0,
+        "img": "images/ch_neg.jpg"
     },
     {
         "id": 3,
         "nombre": "Bombon Bonobon blanco",
         "marca": "Arcor",
-        "precio": 120
+        "precio": 120,
+        "cantidad": 0,
+        "img": "images/bmb_bl.jpg"
     },
     {
         "id": 4,
         "nombre": "Bombon Bonobon negro",
         "marca": "Arcor",
-        "precio": 100
+        "precio": 100,
+        "cantidad": 0,
+        "img": "images/bmb_neg.jpg"
     },
     {
         "id": 5,
         "nombre": "Bombon Bonobon dulce de leche",
         "marca": "Arcor",
-        "precio": 150
+        "precio": 150,
+        "cantidad": 0,
+        "img": "images/ddl.jpg"
     }
 ]
